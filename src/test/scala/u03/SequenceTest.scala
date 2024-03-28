@@ -39,11 +39,34 @@ class SequenceTest:
     val l2: Sequence[Int] = Cons(40, Cons(50, Nil()))
     assertEquals(Cons(10, Cons(20, Cons(30, Cons(40, Cons(50, Nil()))))), concat(l, l2))
     assertEquals(Cons(40, Cons(50, Nil())), concat(Nil(), l2))
+
   @Test def testFlatMap() =
     assertEquals(Cons(11, Cons(21, Cons(31, Nil()))), flatMap(l)(v => Cons(v + 1, Nil())))
     assertEquals(Nil(), flatMap(Nil())(v => Cons(v, Nil())))
 
   @Test def testMin() =
+    // 0 elementi
+    assertEquals(Empty(), min(Nil()))
+    // 1 elemento
+    assertEquals(Just(10),  min(Cons(10,Nil())))
+    // 2 elementi
+    assertEquals(Just(10),  min(Cons(10,Cons(20, Nil()))))
+    assertEquals(Just(10),  min(Cons(20,Cons(10, Nil()))))
+    assertEquals(Just(10),  min(Cons(10,Cons(10, Nil()))))
+
+    assertEquals(Just(2),  min(Cons(20,Cons(10, Cons(2, Nil())))))
+    assertEquals(Just(2),  min(Cons(20,Cons(2, Cons(10, Nil())))))
+    assertEquals(Just(2),  min(Cons(2,Cons(10, Cons(10, Nil())))))
+
+    assertEquals(Just(2),  min(Cons(29,Cons(10, Cons(10, Cons(2, Nil()))))))
+
+
+
+
     assertEquals(Just(10), min(l))
     assertEquals(Just(1), min(Cons(1, Nil())))
-    assertEquals(Empty(), min(Nil()))
+
+    
+  @Test def testFilterFlatMap() =
+    assertEquals(Cons(20, Cons(30, Nil())), filter2(l)(_ >= 20))
+    assertEquals(Cons(10, Cons(30, Nil())), filter2(l)(_ != 20))
